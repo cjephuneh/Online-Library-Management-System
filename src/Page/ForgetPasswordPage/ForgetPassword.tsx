@@ -2,12 +2,11 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 
+import { useForgetPassword } from "./useForgetPassword";
 import { useTheme } from "../../theme/useTheme";
 import { CustomInput } from "../../component/CustomInput/CustomInput";
-import { useRegister } from "./useRegister";
-import { RegisterDataType, schema } from "./RegisterZod";
-import { RegisterInputField } from "./RegisterInputField";
 
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
@@ -18,24 +17,41 @@ import Typography from "@mui/material/Typography";
 import LoadingButton from "@mui/lab/LoadingButton";
 
 import LoginIcon from "@mui/icons-material/Login";
+import AlternateEmailIcon from "@mui/icons-material/AlternateEmail";
 
-export const Register = () => {
+const schema = z.object({
+  email: z.string().email({ message: "Please enter a valid email address." }),
+});
+
+const ForgetPasswordInputField = [
+  {
+    id: "email",
+    name: "email",
+    label: "Email Address",
+    type: "email",
+    startIcon: <AlternateEmailIcon />,
+    endIcon: <></>,
+    endIconSwap: <></>,
+    required: true,
+  },
+];
+export type ForgetPasswordDataType = z.infer<typeof schema>;
+
+export const ForgetPassword = () => {
   const methods = useForm({
     defaultValues: {
-      fname: "",
       email: "",
-      password: "",
-      password2: "",
     },
     resolver: zodResolver(schema),
   });
 
-  const { registerLoading, sendRegisterRequest } = useRegister();
+  const { forgetPasswordLoading, sendForgetPasswordRequest } =
+    useForgetPassword();
 
-  const onRegisterFormSubmitHandler: SubmitHandler<RegisterDataType> = (
+  const onLoginFormSubmitHandler: SubmitHandler<ForgetPasswordDataType> = (
     data
   ) => {
-    sendRegisterRequest(data);
+    sendForgetPasswordRequest(data);
   };
 
   const { theme } = useTheme();
@@ -54,35 +70,29 @@ export const Register = () => {
         }}
       >
         <Typography variant="h4" sx={{ mb: 4 }}>
-          Join Online Library
+          Forget Password
         </Typography>
         <FormProvider {...methods}>
           <Stack
             gap={2}
             component={"form"}
             noValidate
-            onSubmit={methods.handleSubmit(onRegisterFormSubmitHandler)}
+            onSubmit={methods.handleSubmit(onLoginFormSubmitHandler)}
           >
-            {RegisterInputField.map((item) => (
+            {ForgetPasswordInputField.map((item) => (
               <CustomInput key={item.id} {...item} />
             ))}
-            <Typography variant="body2" textAlign={"center"}>
-              By clicking Agree & Join, you agree to the Library{" "}
-              <Link to="">User Agreement</Link>,{" "}
-              <Link to="">Privacy Policy</Link> and{" "}
-              <Link to="">Cookie Policy</Link>
-            </Typography>
             <LoadingButton
               type="submit"
               variant="contained"
               color="primary"
               fullWidth
-              loading={registerLoading}
+              loading={forgetPasswordLoading}
               loadingPosition="start"
               startIcon={<LoginIcon />}
               sx={{ borderRadius: 5, fontWeight: 700, py: 1 }}
             >
-              Agree & Join
+              Send Password Reset Link
             </LoadingButton>
             <Divider>or</Divider>
             <Typography variant="body2" textAlign={"center"}>

@@ -62,7 +62,7 @@ export const Login = () => {
             {LoginInputField.map((item) => (
               <CustomInput key={item.id} {...item} />
             ))}
-            <Link to="/login">Forget Password?</Link>
+            <Link to="/forget-password">Forget Password?</Link>
             <LoadingButton
               type="submit"
               variant="contained"
