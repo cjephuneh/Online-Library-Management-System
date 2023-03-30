@@ -7,3 +7,5 @@ export const redux = configureStore({
     auth: authSlice.reducer,
   },
 });
+
+export type RootState = ReturnType<typeof redux.getState>;

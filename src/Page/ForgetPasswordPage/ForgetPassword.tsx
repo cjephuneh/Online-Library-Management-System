@@ -58,12 +58,17 @@ export const ForgetPassword = () => {
   const smallScreen = useMediaQuery(theme.breakpoints.down("md"));
   return (
     <Box
-      sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        minHeight: "70vh",
+      }}
     >
       <Paper
         elevation={smallScreen ? 0 : 4}
         sx={{
-          width: { xs: "100vw", md: 400 },
+          width: { xs: "100vw", sm: 400 },
           py: 4,
           px: 2,
           borderRadius: 2.5,

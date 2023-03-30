@@ -1,4 +1,9 @@
 import * as React from "react";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+
+import { RootState } from "../../redux/redux";
+
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -19,9 +24,12 @@ interface Props {
 }
 
 const drawerWidth = 240;
-const navItems = ["Home", "About", "Contact"];
 
 export default function Header(props: Props) {
+  const { token } = useSelector((state: RootState) => state.auth);
+
+  const navigate = useNavigate();
+
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
@@ -31,18 +39,37 @@ export default function Header(props: Props) {
 
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
-      <Typography variant="h6" sx={{ my: 2 }}>
-        MUI
+      <Typography variant="h6" sx={{ my: 2, fontWeight: 700 }}>
+        Online Library
       </Typography>
       <Divider />
       <List>
-        {navItems.map((item) => (
-          <ListItem key={item} disablePadding>
+        {token && (
+          <ListItem onClick={() => navigate("/dashboard")} disablePadding>
             <ListItemButton sx={{ textAlign: "center" }}>
-              <ListItemText primary={item} />
+              <ListItemText primary={"Dashboard"} />
             </ListItemButton>
           </ListItem>
-        ))}
+        )}
+        <ListItem disablePadding>
+          <ListItemButton sx={{ textAlign: "center" }}>
+            <ListItemText primary={"Library"} />
+          </ListItemButton>
+        </ListItem>
+        {!token && (
+          <>
+            <ListItem onClick={() => navigate("/login")} disablePadding>
+              <ListItemButton sx={{ textAlign: "center" }}>
+                <ListItemText primary={"Sign In"} />
+              </ListItemButton>
+            </ListItem>
+            <ListItem onClick={() => navigate("/register")} disablePadding>
+              <ListItemButton sx={{ textAlign: "center" }}>
+                <ListItemText primary={"Register"} />
+              </ListItemButton>
+            </ListItem>
+          </>
+        )}
       </List>
     </Box>
   );
@@ -72,11 +99,31 @@ export default function Header(props: Props) {
             Online Library
           </Typography>
           <Box sx={{ display: { xs: "none", sm: "block" } }}>
-            {navItems.map((item) => (
-              <Button key={item} sx={{ color: "#fff" }}>
-                {item}
+            {token && (
+              <Button
+                onClick={() => navigate("/dashboard")}
+                sx={{ color: "#fff" }}
+              >
+                Dashboard
               </Button>
-            ))}
+            )}
+            <Button sx={{ color: "#fff" }}>Library</Button>
+            {!token && (
+              <>
+                <Button
+                  onClick={() => navigate("/login")}
+                  sx={{ color: "#fff" }}
+                >
+                  Sign In
+                </Button>
+                <Button
+                  onClick={() => navigate("/register")}
+                  sx={{ color: "#fff" }}
+                >
+                  Register
+                </Button>
+              </>
+            )}
           </Box>
         </Toolbar>
       </AppBar>
