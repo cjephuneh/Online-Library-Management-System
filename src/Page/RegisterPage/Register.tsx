@@ -56,6 +56,7 @@ export const Register = () => {
           py: 4,
           px: 2,
           borderRadius: 2.5,
+          background: smallScreen ? "#dee2e6" : "#fff",
         }}
       >
         <Typography variant="h4" sx={{ mb: 4 }}>

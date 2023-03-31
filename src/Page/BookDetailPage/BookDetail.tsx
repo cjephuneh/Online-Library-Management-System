@@ -31,7 +31,10 @@ export const BookDetail = () => {
           <Avatar
             alt="book"
             src="https://m.media-amazon.com/images/I/61dioN3IlcL._AC_UF894,1000_QL80_.jpg"
-            sx={{ height: 600, width: 400 }}
+            sx={{
+              height: { xs: 400, md: 600 },
+              width: { xs: "90vw", md: 400 },
+            }}
             variant="square"
           />
           <Stack justifyContent={"space-between"}>

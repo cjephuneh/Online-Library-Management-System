@@ -14,7 +14,7 @@ export const BookCard = () => {
   return (
     <Card
       elevation={0}
-      sx={{ minWidth: { xs: "100vw", md: 375 }, borderRadius: 2.5 }}
+      sx={{ minWidth: { xs: "95vw", md: 375 }, borderRadius: 2.5 }}
       onClick={() => navigate("/library/1/aarow-swartz")}
     >
       <CardActionArea>
