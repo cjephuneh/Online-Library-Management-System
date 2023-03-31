@@ -20,9 +20,7 @@ export const LibraryHero = () => {
 
   const onSearchFormSubmitHandler: SubmitHandler<{
     searchInput: string;
-  }> = (data) => {
-    console.log(data);
-  };
+  }> = (data) => {};
 
   const { theme } = useTheme();
   const smallScreen = useMediaQuery(theme.breakpoints.only("xs"));
