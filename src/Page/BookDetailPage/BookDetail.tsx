@@ -89,7 +89,7 @@ export const BookDetail = () => {
                   loading={borrowLoading}
                   loadingPosition="start"
                   startIcon={<LocalMallIcon />}
-                  onClick={() => sendBorrowRequest()}
+                  onClick={() => sendBorrowRequest({ random: "" })}
                   fullWidth
                 >
                   Borrow
@@ -100,7 +100,7 @@ export const BookDetail = () => {
                   loading={reserveLoading}
                   loadingPosition="start"
                   startIcon={<BeenhereIcon />}
-                  onClick={() => sendReserveRequest()}
+                  onClick={() => sendReserveRequest({ random: "" })}
                   fullWidth
                 >
                   Reserved
