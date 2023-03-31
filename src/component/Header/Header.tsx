@@ -51,7 +51,7 @@ export default function Header(props: Props) {
             </ListItemButton>
           </ListItem>
         )}
-        <ListItem disablePadding>
+        <ListItem onClick={() => navigate("/library")} disablePadding>
           <ListItemButton sx={{ textAlign: "center" }}>
             <ListItemText primary={"Library"} />
           </ListItemButton>
@@ -69,6 +69,13 @@ export default function Header(props: Props) {
               </ListItemButton>
             </ListItem>
           </>
+        )}
+        {token && (
+          <ListItem disablePadding>
+            <ListItemButton sx={{ textAlign: "center" }}>
+              <ListItemText primary={"Logout"} />
+            </ListItemButton>
+          </ListItem>
         )}
       </List>
     </Box>
@@ -107,7 +114,9 @@ export default function Header(props: Props) {
                 Dashboard
               </Button>
             )}
-            <Button sx={{ color: "#fff" }}>Library</Button>
+            <Button onClick={() => navigate("/library")} sx={{ color: "#fff" }}>
+              Library
+            </Button>
             {!token && (
               <>
                 <Button
@@ -124,6 +133,7 @@ export default function Header(props: Props) {
                 </Button>
               </>
             )}
+            {token && <Button sx={{ color: "#fff" }}>Logout</Button>}
           </Box>
         </Toolbar>
       </AppBar>
@@ -147,7 +157,8 @@ export default function Header(props: Props) {
           {drawer}
         </Drawer>
       </Box>
-      <Box component="main" sx={{ p: 6 }}></Box>
+      <Box component="main" sx={{ p: 3 }}></Box>
+      <Toolbar />
     </Box>
   );
 }

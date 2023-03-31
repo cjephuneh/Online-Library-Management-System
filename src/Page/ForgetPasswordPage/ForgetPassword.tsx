@@ -84,6 +84,10 @@ export const ForgetPassword = () => {
             noValidate
             onSubmit={methods.handleSubmit(onLoginFormSubmitHandler)}
           >
+            <Typography variant="body2">
+              Lost your password? Please enter your email address. You will
+              recieve a link to create a new password via email.
+            </Typography>
             {ForgetPasswordInputField.map((item) => (
               <CustomInput key={item.id} {...item} />
             ))}
@@ -101,9 +105,8 @@ export const ForgetPassword = () => {
             </LoadingButton>
             <Divider>or</Divider>
             <Typography variant="body2" textAlign={"center"}>
-              Already have a account?{" "}
               <Link to="/login" color="primary">
-                Sign In
+                Back to Login
               </Link>
             </Typography>
           </Stack>

@@ -8,6 +8,9 @@ export const useTheme = () => {
   const theme = createTheme({
     palette: {
       mode: mode,
+      background: {
+        default: "#dee2e6",
+      },
     },
   });
 
