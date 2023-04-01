@@ -16,11 +16,16 @@ export const useRegister = () => {
     try {
       await axios({
         method: "POST",
-        url: process.env.REACT_APP_BASE_URL! + "/users/",
+        url: process.env.REACT_APP_BASE_URL! + "/auth/users/",
         headers: {
           "Content-Type": "application/json",
         },
-        data: formData,
+        data: {
+          full_name: formData.fname,
+          email: formData.email,
+          password: formData.password,
+          password2: formData.password2,
+        },
       });
 
       sendLoginRequest({ email: formData.email, password: formData.password });

@@ -1,11 +1,13 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
+import { Link, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 
 import { useTheme } from "../../theme/useTheme";
 import { CustomInput } from "../../component/CustomInput/CustomInput";
 import { useRegister } from "./useRegister";
+import { RootState } from "../../redux/redux";
 import { RegisterDataType, schema } from "./RegisterZod";
 import { RegisterInputField } from "./RegisterInputField";
 
@@ -20,6 +22,13 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import LoginIcon from "@mui/icons-material/Login";
 
 export const Register = () => {
+  const { token } = useSelector((state: RootState) => state.auth);
+  const navigate = useNavigate();
+
+  if (token) {
+    navigate("/library");
+  }
+
   const methods = useForm({
     defaultValues: {
       fname: "",

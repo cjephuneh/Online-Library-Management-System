@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, Navigate } from "react-router-dom";
 
 import { useTheme } from "./theme/useTheme";
 import { Login } from "./Page/LoginPage/Login";
@@ -25,6 +25,7 @@ const App: React.FC = () => {
           <Route path="/library" element={<Library />} />
           <Route path="/library/:bookID/:bookSLUG" element={<BookDetail />} />
           <Route path="/forget-password" element={<ForgetPassword />} />
+          <Route path="/" element={<Navigate to="library" />} />
         </Routes>
       </Layout>
     </ThemeProvider>

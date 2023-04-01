@@ -1,12 +1,14 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
+import { useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 
 import { useTheme } from "../../theme/useTheme";
 import { LoginDataType, schema } from "./LoginZod";
 import { LoginInputField } from "./LoginInputField";
 import { CustomInput } from "../../component/CustomInput/CustomInput";
+import { RootState } from "../../redux/redux";
 import { useLogin } from "./useLogin";
 
 import Box from "@mui/material/Box";
@@ -20,6 +22,13 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import LoginIcon from "@mui/icons-material/Login";
 
 export const Login = () => {
+  const { token } = useSelector((state: RootState) => state.auth);
+  const navigate = useNavigate();
+
+  if (token) {
+    navigate("/library");
+  }
+
   const methods = useForm({
     defaultValues: {
       email: "",

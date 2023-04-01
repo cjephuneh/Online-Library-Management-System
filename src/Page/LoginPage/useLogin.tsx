@@ -17,7 +17,7 @@ export const useLogin = () => {
     try {
       const response = await axios({
         method: "POST",
-        url: process.env.REACT_APP_BASE_URL! + "/jwt/create",
+        url: process.env.REACT_APP_BASE_URL! + "/auth/jwt/create/",
         headers: {
           "Content-Type": "application/json",
         },

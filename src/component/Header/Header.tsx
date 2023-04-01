@@ -2,6 +2,7 @@ import * as React from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
+import { useLogout } from "../../hooks/useLogout";
 import { RootState } from "../../redux/redux";
 
 import AppBar from "@mui/material/AppBar";
@@ -26,6 +27,8 @@ interface Props {
 const drawerWidth = 240;
 
 export default function Header(props: Props) {
+  const { sendLogoutRequest } = useLogout();
+
   const { token } = useSelector((state: RootState) => state.auth);
 
   const navigate = useNavigate();
@@ -71,7 +74,7 @@ export default function Header(props: Props) {
           </>
         )}
         {token && (
-          <ListItem disablePadding>
+          <ListItem onClick={() => sendLogoutRequest()} disablePadding>
             <ListItemButton sx={{ textAlign: "center" }}>
               <ListItemText primary={"Logout"} />
             </ListItemButton>
@@ -140,7 +143,14 @@ export default function Header(props: Props) {
                 </Button>
               </>
             )}
-            {token && <Button sx={{ color: "#fff" }}>Logout</Button>}
+            {token && (
+              <Button
+                onClick={() => sendLogoutRequest()}
+                sx={{ color: "#fff" }}
+              >
+                Logout
+              </Button>
+            )}
           </Box>
         </Toolbar>
       </AppBar>
