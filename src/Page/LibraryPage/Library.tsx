@@ -8,13 +8,13 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import { BooksSkeleton } from "../../component/Skeleton/BooksSkeleton";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/redux";
 
 export const Library = () => {
-  const { bookLoading, bookError, sendGetBookRequest } = useGetBook();
+  const { bookLoading, bookError } = useGetBook();
 
-  React.useEffect(() => {
-    // sendGetBookRequest();
-  }, [sendGetBookRequest]);
+  const { books } = useSelector((state: RootState) => state.book);
 
   return (
     <React.Fragment>
@@ -39,27 +39,9 @@ export const Library = () => {
             gap={4}
             flexWrap={"wrap"}
           >
-            <BookCard />
-            <BookCard />
-            <BookCard />
-            <BookCard />
-            <BookCard />
-            <BookCard />
-            <BookCard />
-            <BookCard />
-            <BookCard />
-            <BookCard />
-            <BookCard />
-            <BookCard />
-            <BookCard />
-            <BookCard />
-            <BookCard />
-            <BookCard />
-            <BookCard />
-            <BookCard />
-            <BookCard />
-            <BookCard />
-            <BookCard />
+            {books?.map((item) => (
+              <BookCard key={item.id} {...item} />
+            ))}
           </Stack>
         )}
         {bookError && (

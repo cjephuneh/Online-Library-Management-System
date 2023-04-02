@@ -28,6 +28,7 @@ export const useRegister = () => {
         },
       });
 
+      toast.success("Registered successfully!");
       sendLoginRequest({ email: formData.email, password: formData.password });
       setRegisterLoading(false);
     } catch (error) {

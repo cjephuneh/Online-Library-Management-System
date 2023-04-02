@@ -15,7 +15,7 @@ export const useGetBook = () => {
     try {
       const response = await axios({
         method: "GET",
-        url: process.env.REACT_APP_BASE_URL! + "/books",
+        url: process.env.REACT_APP_BASE_URL! + "/book/book/",
       });
 
       dispatch(bookActions.setBooks(response.data));

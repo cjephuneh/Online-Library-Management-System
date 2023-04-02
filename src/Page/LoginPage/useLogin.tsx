@@ -26,6 +26,7 @@ export const useLogin = () => {
 
       dispatch(authActions.updateToken(response.data));
       setLoginLoading(false);
+      toast.success("Logged in successfully!");
     } catch (error) {
       toast.error(
         "Login Failed! Please double check your credential and try again."

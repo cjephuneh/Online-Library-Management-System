@@ -19,7 +19,7 @@ export const useBookBorrow = () => {
   const [borrowLoading, setBorrowLoading] = React.useState<boolean>(false);
   const [borrowError, setBorrowError] = React.useState<boolean>(false);
 
-  const sendBorrowRequest = async (formData: { random: string }) => {
+  const sendBorrowRequest = async (bookID: string, bookSLUG: string) => {
     setBorrowLoading(true);
 
     if (!token) {
@@ -30,16 +30,20 @@ export const useBookBorrow = () => {
     try {
       await axiosInstance({
         method: "POST",
-        url: process.env.REACT_APP_BASE_URL! + "/books/1/borrow/",
+        url:
+          process.env.REACT_APP_BASE_URL! + `/book/book/${bookID}/${bookSLUG}/`,
         headers: {
           "Content-Type": "application/json",
         },
-        data: formData,
+        data: {
+          status: "B",
+        },
       });
 
       sendGetBookRequest();
       setBorrowLoading(false);
     } catch (error) {
+      console.log(error);
       toast.error("Something went wrong while completing your request!");
       setBorrowError(true);
       setBorrowLoading(false);

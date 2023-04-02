@@ -10,7 +10,9 @@ interface InitialStateDataType {
 }
 
 const initialState: InitialStateDataType = {
-  token: undefined,
+  token: localStorage.getItem("token")
+    ? JSON.parse(localStorage.getItem("token")!)
+    : undefined,
 };
 
 export const authSlice = createSlice({
@@ -19,9 +21,11 @@ export const authSlice = createSlice({
   reducers: {
     updateToken(state, action) {
       state.token = action.payload;
+      localStorage.setItem("token", JSON.stringify(action.payload));
     },
     deleteToken(state) {
       state.token = undefined;
+      localStorage.removeItem("token");
     },
   },
 });

@@ -6,6 +6,7 @@ import { Login } from "./Page/LoginPage/Login";
 import { Layout } from "./component/Layout/Layout";
 import { Library } from "./Page/LibraryPage/Library";
 import { Register } from "./Page/RegisterPage/Register";
+import { useGetBook } from "./Page/LibraryPage/useGetBook";
 import { Dashboard } from "./Page/DashboardPage/Dashboard";
 import { BookDetail } from "./Page/BookDetailPage/BookDetail";
 import { ForgetPassword } from "./Page/ForgetPasswordPage/ForgetPassword";
@@ -14,6 +15,12 @@ import { ThemeProvider } from "@mui/material";
 
 const App: React.FC = () => {
   const { theme } = useTheme();
+
+  const { sendGetBookRequest } = useGetBook();
+
+  React.useEffect(() => {
+    sendGetBookRequest();
+  }, [sendGetBookRequest]);
 
   return (
     <ThemeProvider theme={theme}>

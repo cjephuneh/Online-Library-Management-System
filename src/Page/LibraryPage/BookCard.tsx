@@ -8,28 +8,35 @@ import Typography from "@mui/material/Typography";
 import CardActionArea from "@mui/material/CardActionArea";
 import Rating from "@mui/material/Rating";
 import Stack from "@mui/material/Stack";
+import { BookDataType } from "../../redux/bookSlice";
 
-export const BookCard = () => {
+export const BookCard: React.FC<BookDataType> = ({ ...item }) => {
   const navigate = useNavigate();
+
+  const end_at = new Date(item.end_at!).toLocaleDateString("en-us", {
+    weekday: "long",
+    month: "long",
+    day: "numeric",
+  });
   return (
     <Card
       elevation={0}
       sx={{ minWidth: { xs: "95vw", md: 375 }, borderRadius: 2.5 }}
-      onClick={() => navigate("/library/1/aarow-swartz")}
+      onClick={() => navigate(`/library/${item.id}/${item.slug}/`)}
     >
       <CardActionArea>
         <CardMedia
           component="img"
           height="400"
-          image="https://m.media-amazon.com/images/I/61dioN3IlcL._AC_UF894,1000_QL80_.jpg"
+          image={item.photo}
           alt="green iguana"
         />
         <CardContent>
           <Typography variant="h6" component="div" fontWeight={700}>
-            The Idealist
+            {item.name.slice(0, 32)}...
           </Typography>
           <Typography variant="body2" color="text.secondary" gutterBottom>
-            Aaron Swartz
+            {item.author}
           </Typography>
           <Stack
             direction={"row"}
@@ -38,19 +45,27 @@ export const BookCard = () => {
           >
             <Rating
               name="read-only"
-              value={3.5}
+              value={+item.rating}
               precision={0.5}
               readOnly
               sx={{ color: "#40c057" }}
             />
             <Typography variant="body2" color="text.secondary">
-              Biography
+              {item.genre}
             </Typography>
           </Stack>
 
-          <Typography variant="body2" sx={{ color: "red" }}>
-            Not Available for borrowing till 14th March
-          </Typography>
+          {item.end_at && (
+            <Typography variant="body2" sx={{ color: "red" }}>
+              Not Available Till {end_at}
+            </Typography>
+          )}
+
+          {!item.end_at && (
+            <Typography variant="body2" sx={{ color: "green" }}>
+              Available
+            </Typography>
+          )}
         </CardContent>
       </CardActionArea>
     </Card>
