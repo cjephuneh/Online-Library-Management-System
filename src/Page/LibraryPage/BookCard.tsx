@@ -18,6 +18,11 @@ export const BookCard: React.FC<BookDataType> = ({ ...item }) => {
     month: "long",
     day: "numeric",
   });
+
+  const today = new Date().getTime();
+  const endTimeStamp = new Date(item?.end_at!).getTime();
+  const isBookAvailable = today - endTimeStamp > 86400000;
+
   return (
     <Card
       elevation={0}
@@ -55,13 +60,13 @@ export const BookCard: React.FC<BookDataType> = ({ ...item }) => {
             </Typography>
           </Stack>
 
-          {item.end_at && (
+          {!isBookAvailable && (
             <Typography variant="body2" sx={{ color: "red" }}>
               Not Available Till {end_at}
             </Typography>
           )}
 
-          {!item.end_at && (
+          {isBookAvailable && (
             <Typography variant="body2" sx={{ color: "green" }}>
               Available
             </Typography>

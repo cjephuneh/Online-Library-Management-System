@@ -19,7 +19,7 @@ export const useBookReserve = () => {
   const [reserveLoading, setReserveLoading] = React.useState<boolean>(false);
   const [reserveError, setReserveError] = React.useState<boolean>(false);
 
-  const sendReserveRequest = async (formData: { random: string }) => {
+  const sendReserveRequest = async (bookID: string, bookSLUG: string) => {
     setReserveLoading(true);
 
     if (!token) {
@@ -29,17 +29,21 @@ export const useBookReserve = () => {
 
     try {
       await axiosInstance({
-        method: "POST",
-        url: process.env.REACT_APP_BASE_URL! + "/books/1/borrow/",
+        method: "PUT",
+        url:
+          process.env.REACT_APP_BASE_URL! +
+          `/book/book/${bookID}/${bookSLUG}/update/`,
         headers: {
           "Content-Type": "application/json",
         },
-        data: formData,
+        data: { status: "R" },
       });
 
       sendGetBookRequest();
       setReserveLoading(false);
+      toast.success("Congrats! You have successfully reserved the books.");
     } catch (error) {
+      // console.log(error.);
       toast.error("Something went wrong while completing your request!");
       setReserveError(true);
       setReserveLoading(false);

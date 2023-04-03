@@ -16,7 +16,7 @@ import { ThemeProvider } from "@mui/material";
 const App: React.FC = () => {
   const { theme } = useTheme();
 
-  const { sendGetBookRequest } = useGetBook();
+  const { bookLoading, bookError, sendGetBookRequest } = useGetBook();
 
   React.useEffect(() => {
     sendGetBookRequest();
@@ -29,7 +29,12 @@ const App: React.FC = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/library" element={<Library />} />
+          <Route
+            path="/library"
+            element={
+              <Library bookLoading={bookLoading} bookError={bookError} />
+            }
+          />
           <Route path="/library/:bookID/:bookSLUG" element={<BookDetail />} />
           <Route path="/forget-password" element={<ForgetPassword />} />
           <Route path="/" element={<Navigate to="library" />} />

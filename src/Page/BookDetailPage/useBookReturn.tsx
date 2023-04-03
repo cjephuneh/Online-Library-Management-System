@@ -7,7 +7,7 @@ import { RootState } from "../../redux/redux";
 import { useAxios } from "../../AxiosInterceptor/useAxios";
 import { useGetBook } from "../LibraryPage/useGetBook";
 
-export const useBookBorrow = () => {
+export const useBookReturn = () => {
   const { token } = useSelector((state: RootState) => state.auth);
 
   const { axiosInstance } = useAxios();
@@ -16,15 +16,15 @@ export const useBookBorrow = () => {
 
   const navigate = useNavigate();
 
-  const [borrowLoading, setBorrowLoading] = React.useState<boolean>(false);
-  const [borrowError, setBorrowError] = React.useState<boolean>(false);
+  const [returnLoading, setReturnLoading] = React.useState<boolean>(false);
+  const [returnError, setReturnError] = React.useState<boolean>(false);
 
-  const sendBorrowRequest = async (bookID: string, bookSLUG: string) => {
-    setBorrowLoading(true);
+  const sendReturnRequest = async (bookID: string, bookSLUG: string) => {
+    setReturnLoading(true);
 
     if (!token) {
       navigate("/login");
-      return toast.warning("Login required to borrow books.");
+      return toast.warning("Login required to Return books.");
     }
 
     try {
@@ -36,21 +36,18 @@ export const useBookBorrow = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        data: {
-          status: "B",
-        },
+        data: { status: "A" },
       });
 
       sendGetBookRequest();
-      setBorrowLoading(false);
-      toast.success("Congrats! You have successfully borrowed the books.");
+      setReturnLoading(false);
+      toast.success("Congrats! You have successfully returned the books.");
     } catch (error) {
-      // console.log(first)
       toast.error("Something went wrong while completing your request!");
-      setBorrowError(true);
-      setBorrowLoading(false);
+      setReturnError(true);
+      setReturnLoading(false);
     }
   };
 
-  return { borrowLoading, borrowError, sendBorrowRequest };
+  return { returnLoading, returnError, sendReturnRequest };
 };

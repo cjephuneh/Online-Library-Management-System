@@ -1,7 +1,6 @@
 import React from "react";
 
 import { LibraryHero } from "./LibraryHero";
-import { useGetBook } from "./useGetBook";
 import { BookCard } from "./BookCard";
 
 import Box from "@mui/material/Box";
@@ -11,9 +10,12 @@ import { BooksSkeleton } from "../../component/Skeleton/BooksSkeleton";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/redux";
 
-export const Library = () => {
-  const { bookLoading, bookError } = useGetBook();
+interface Props {
+  bookLoading: boolean;
+  bookError: boolean;
+}
 
+export const Library: React.FC<Props> = ({ bookLoading, bookError }) => {
   const { books } = useSelector((state: RootState) => state.book);
 
   return (

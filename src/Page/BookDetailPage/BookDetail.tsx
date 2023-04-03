@@ -25,14 +25,20 @@ import SubjectIcon from "@mui/icons-material/Subject";
 import LocalMallIcon from "@mui/icons-material/LocalMall";
 import BeenhereIcon from "@mui/icons-material/Beenhere";
 import ThumbsUpDownIcon from "@mui/icons-material/ThumbsUpDown";
+import { useBookReturn } from "./useBookReturn";
+import { useDecodedToken } from "../../hooks/useDecodedToken";
 
 export const BookDetail = () => {
   const { bookID, bookSLUG } = useParams();
 
   const { borrowLoading, sendBorrowRequest } = useBookBorrow();
   const { reserveLoading, sendReserveRequest } = useBookReserve();
+  const { returnLoading, sendReturnRequest } = useBookReturn();
 
   const { books } = useSelector((state: RootState) => state.book);
+
+  // To check whether the book is borrowed by this user or not to render the button conditionally
+  const { currentEmail } = useDecodedToken();
 
   const book = books?.filter(
     (item) => item.id === +bookID! && item.slug === bookSLUG
@@ -43,6 +49,10 @@ export const BookDetail = () => {
     month: "long",
     day: "numeric",
   });
+
+  const today = new Date().getTime();
+  const endTimeStamp = new Date(book?.end_at!).getTime();
+  const isBookAvailable = today - endTimeStamp > 86400000;
 
   return (
     <Container sx={{ py: 4 }}>
@@ -86,7 +96,7 @@ export const BookDetail = () => {
                 </ListItem>
                 <ListItem>
                   <ListItemIcon>
-                    <ThumbsUpDownIcon color="warning" />
+                    <ThumbsUpDownIcon />
                   </ListItemIcon>
                   <ListItemIcon>
                     <Rating
@@ -98,18 +108,18 @@ export const BookDetail = () => {
                     />
                   </ListItemIcon>
                 </ListItem>
-                {!book?.end_at && (
+                {isBookAvailable && (
                   <ListItem sx={{ color: "#2e7d32" }}>
                     <ListItemIcon>
-                      <LibraryBooksIcon color="success" />
+                      <LibraryBooksIcon />
                     </ListItemIcon>
                     <ListItemText>Available</ListItemText>
                   </ListItem>
                 )}
-                {book?.end_at && (
+                {!isBookAvailable && (
                   <ListItem sx={{ color: "#d32f2f" }}>
                     <ListItemIcon>
-                      <LibraryBooksIcon color="error" />
+                      <LibraryBooksIcon />
                     </ListItemIcon>
                     <ListItemText>Not Available Till {end_at}</ListItemText>
                   </ListItem>
@@ -124,31 +134,49 @@ export const BookDetail = () => {
                 gap={4}
                 sx={{ mb: 2 }}
               >
+                {currentEmail !== book?.patrons && (
+                  <LoadingButton
+                    variant="contained"
+                    color="success"
+                    loading={borrowLoading}
+                    loadingPosition="start"
+                    startIcon={<LocalMallIcon />}
+                    onClick={() => sendBorrowRequest(bookID!, bookSLUG!)}
+                    disabled={!isBookAvailable}
+                    fullWidth
+                  >
+                    Borrow
+                  </LoadingButton>
+                )}
+                {currentEmail !== book?.patrons && (
+                  <LoadingButton
+                    variant="contained"
+                    color="warning"
+                    loading={reserveLoading}
+                    loadingPosition="start"
+                    startIcon={<BeenhereIcon />}
+                    onClick={() => sendReserveRequest(bookID!, bookSLUG!)}
+                    disabled={!isBookAvailable}
+                    fullWidth
+                  >
+                    Reserved
+                  </LoadingButton>
+                )}
+              </Stack>
+              {currentEmail === book?.patrons && (
                 <LoadingButton
                   variant="contained"
                   color="success"
-                  loading={borrowLoading}
-                  loadingPosition="start"
-                  startIcon={<LocalMallIcon />}
-                  onClick={() => sendBorrowRequest(bookID!, bookSLUG!)}
-                  // disabled={true}
-                  fullWidth
-                >
-                  Borrow
-                </LoadingButton>
-                <LoadingButton
-                  variant="contained"
-                  color="warning"
-                  loading={reserveLoading}
+                  loading={returnLoading}
                   loadingPosition="start"
                   startIcon={<BeenhereIcon />}
-                  onClick={() => sendReserveRequest({ random: "" })}
-                  // disabled={true}
+                  onClick={() => sendReturnRequest(bookID!, bookSLUG!)}
                   fullWidth
+                  sx={{ mb: 2 }}
                 >
-                  Reserved
+                  Return
                 </LoadingButton>
-              </Stack>
+              )}
               <Typography variant="body2" color="text.secondary">
                 *** Books can be borrowed for 21 days while it can be reserved
                 only for 2 days. If its not picked up within 2 days, it will be
