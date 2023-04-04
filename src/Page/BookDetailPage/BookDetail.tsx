@@ -37,9 +37,9 @@ export const BookDetail = () => {
 
   const { books } = useSelector((state: RootState) => state.book);
 
-  const book = books?.filter(
+  const book = books?.find(
     (item) => item.id === +bookID! && item.slug === bookSLUG
-  )[0];
+  );
 
   const end_at = new Date(book?.end_at!).toLocaleDateString("en-us", {
     weekday: "long",

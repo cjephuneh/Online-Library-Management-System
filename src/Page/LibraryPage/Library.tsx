@@ -7,8 +7,8 @@ import { RootState } from "../../redux/redux";
 import { BooksSkeleton } from "../../component/Skeleton/BooksSkeleton";
 
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
 import { FormControl, InputLabel } from "@mui/material";
 
 interface Props {
@@ -41,7 +41,7 @@ export const Library: React.FC<Props> = ({ bookLoading, bookError }) => {
           >
             Recently Added
           </Typography>
-          <FormControl sx={{ width: "30vw" }}>
+          <FormControl sx={{ width: "10vw" }}>
             <InputLabel id="demo-simple-select-label">
               --- Select Genre ---
             </InputLabel>
