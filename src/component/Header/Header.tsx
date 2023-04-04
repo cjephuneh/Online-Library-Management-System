@@ -1,9 +1,8 @@
 import * as React from "react";
-import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 import { useLogout } from "../../hooks/useLogout";
-import { RootState } from "../../redux/redux";
+import { useDecodedToken } from "../../hooks/useDecodedToken";
 
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -29,7 +28,7 @@ const drawerWidth = 240;
 export default function Header(props: Props) {
   const { sendLogoutRequest } = useLogout();
 
-  const { token } = useSelector((state: RootState) => state.auth);
+  const { token, is_staff } = useDecodedToken();
 
   const navigate = useNavigate();
 
@@ -47,6 +46,13 @@ export default function Header(props: Props) {
       </Typography>
       <Divider />
       <List>
+        {is_staff && (
+          <ListItem onClick={() => navigate("/admin")} disablePadding>
+            <ListItemButton sx={{ textAlign: "center" }}>
+              <ListItemText primary={"Admin"} />
+            </ListItemButton>
+          </ListItem>
+        )}
         {token && (
           <ListItem onClick={() => navigate("/dashboard")} disablePadding>
             <ListItemButton sx={{ textAlign: "center" }}>
@@ -116,6 +122,11 @@ export default function Header(props: Props) {
             Online Library
           </Typography>
           <Box sx={{ display: { xs: "none", sm: "block" } }}>
+            {is_staff && (
+              <Button onClick={() => navigate("/admin")} sx={{ color: "#fff" }}>
+                Admin
+              </Button>
+            )}
             {token && (
               <Button
                 onClick={() => navigate("/dashboard")}

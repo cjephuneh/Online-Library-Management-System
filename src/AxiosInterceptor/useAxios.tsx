@@ -11,6 +11,8 @@ export interface DecodedAccessTokenDataType {
   jti: string;
   user_id: number;
   email: string;
+  is_staff: boolean;
+  is_superuser: boolean;
 }
 
 export const useAxios = () => {

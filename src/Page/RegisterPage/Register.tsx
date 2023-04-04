@@ -49,6 +49,10 @@ export const Register = () => {
 
   const { theme } = useTheme();
   const smallScreen = useMediaQuery(theme.breakpoints.down("md"));
+
+  React.useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <Box
       sx={{

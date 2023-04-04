@@ -6,12 +6,14 @@ import { Login } from "./Page/LoginPage/Login";
 import { Layout } from "./component/Layout/Layout";
 import { Library } from "./Page/LibraryPage/Library";
 import { Register } from "./Page/RegisterPage/Register";
+import { useDecodedToken } from "./hooks/useDecodedToken";
 import { useGetBook } from "./Page/LibraryPage/useGetBook";
 import { Dashboard } from "./Page/DashboardPage/Dashboard";
 import { BookDetail } from "./Page/BookDetailPage/BookDetail";
 import { ForgetPassword } from "./Page/ForgetPasswordPage/ForgetPassword";
 
 import { ThemeProvider } from "@mui/material";
+import { Admin } from "./Page/AdminPage/Admin";
 
 const App: React.FC = () => {
   const { theme } = useTheme();
@@ -22,13 +24,18 @@ const App: React.FC = () => {
     sendGetBookRequest();
   }, [sendGetBookRequest]);
 
+  const { token, is_staff } = useDecodedToken();
+
   return (
     <ThemeProvider theme={theme}>
       <Layout>
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/dashboard" element={<Dashboard />} />
+          <Route
+            path="/dashboard"
+            element={token ? <Dashboard /> : <Navigate to="/login" />}
+          />
           <Route
             path="/library"
             element={
@@ -37,7 +44,12 @@ const App: React.FC = () => {
           />
           <Route path="/library/:bookID/:bookSLUG" element={<BookDetail />} />
           <Route path="/forget-password" element={<ForgetPassword />} />
-          <Route path="/" element={<Navigate to="library" />} />
+          <Route
+            path="/admin"
+            element={is_staff ? <Admin /> : <Navigate to="/library" />}
+          />
+          <Route path="/" element={<Navigate to="/library" />} />
+          <Route path="*" element={"Page Not Found!"} />
         </Routes>
       </Layout>
     </ThemeProvider>

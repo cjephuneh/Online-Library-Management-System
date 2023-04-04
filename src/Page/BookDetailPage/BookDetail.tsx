@@ -5,6 +5,8 @@ import { useParams } from "react-router-dom";
 import { useBookBorrow } from "./useBookBorrow";
 import { useBookReserve } from "./useBookReserve";
 import { RootState } from "../../redux/redux";
+import { useBookReturn } from "./useBookReturn";
+import { useDecodedToken } from "../../hooks/useDecodedToken";
 
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
@@ -25,8 +27,6 @@ import SubjectIcon from "@mui/icons-material/Subject";
 import LocalMallIcon from "@mui/icons-material/LocalMall";
 import BeenhereIcon from "@mui/icons-material/Beenhere";
 import ThumbsUpDownIcon from "@mui/icons-material/ThumbsUpDown";
-import { useBookReturn } from "./useBookReturn";
-import { useDecodedToken } from "../../hooks/useDecodedToken";
 
 export const BookDetail = () => {
   const { bookID, bookSLUG } = useParams();
@@ -36,9 +36,6 @@ export const BookDetail = () => {
   const { returnLoading, sendReturnRequest } = useBookReturn();
 
   const { books } = useSelector((state: RootState) => state.book);
-
-  // To check whether the book is borrowed by this user or not to render the button conditionally
-  const { currentEmail } = useDecodedToken();
 
   const book = books?.filter(
     (item) => item.id === +bookID! && item.slug === bookSLUG
@@ -50,9 +47,17 @@ export const BookDetail = () => {
     day: "numeric",
   });
 
+  // To check whether the book is borrowed by this user or not to render the button conditionally
+  const { currentEmail } = useDecodedToken();
+
+  // To check book availability
   const today = new Date().getTime();
   const endTimeStamp = new Date(book?.end_at!).getTime();
   const isBookAvailable = today - endTimeStamp > 86400000;
+
+  React.useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <Container sx={{ py: 4 }}>

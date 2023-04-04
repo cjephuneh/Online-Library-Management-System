@@ -8,12 +8,16 @@ export const useDecodedToken = () => {
   const { token } = useSelector((state: RootState) => state.auth);
 
   let currentEmail = "@@@@@@@@@@@@@@@@@@@@@@";
+  let is_staff = false;
+  let is_superuser = false;
 
   if (token) {
     const decodedToken: DecodedAccessTokenDataType = jwt_decode(token.access);
 
     currentEmail = decodedToken.email;
+    is_staff = decodedToken.is_staff;
+    is_superuser = decodedToken.is_superuser;
   }
 
-  return { currentEmail };
+  return { token, currentEmail, is_staff, is_superuser };
 };

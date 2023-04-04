@@ -1,26 +1,27 @@
 import React from "react";
-import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 
 import { CustomInput } from "../../component/CustomInput/CustomInput";
+import { useTheme } from "../../theme/useTheme";
 
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
-import LoadingButton from "@mui/lab/LoadingButton";
-
-import SearchIcon from "@mui/icons-material/Search";
-import { useTheme } from "../../theme/useTheme";
 import { useMediaQuery } from "@mui/material";
 
-export const LibraryHero = () => {
-  const methods = useForm({
-    defaultValues: {
-      searchInput: "",
-    },
-  });
+import SearchIcon from "@mui/icons-material/Search";
+import LoadingButton from "@mui/lab/LoadingButton";
+import ClearIcon from "@mui/icons-material/Clear";
 
-  const onSearchFormSubmitHandler: SubmitHandler<{
-    searchInput: string;
-  }> = (data) => {};
+interface Props {
+  searchedData: string;
+  passSearchedData: (inputData: string) => void;
+}
+
+export const LibraryHero: React.FC<Props> = ({
+  passSearchedData,
+  searchedData,
+}) => {
+  const methods = useForm();
 
   const { theme } = useTheme();
   const smallScreen = useMediaQuery(theme.breakpoints.only("xs"));
@@ -42,8 +43,6 @@ export const LibraryHero = () => {
           alignItems={"center"}
           gap={2}
           component={"form"}
-          noValidate
-          onSubmit={methods.handleSubmit(onSearchFormSubmitHandler)}
         >
           <CustomInput
             id="searchInput"
@@ -55,6 +54,8 @@ export const LibraryHero = () => {
             endIcon={<></>}
             endIconSwap={<></>}
             required={true}
+            onChange={(e) => passSearchedData(e.target.value)}
+            value={searchedData}
             hiddenLabel
             variant={"filled"}
             InputLabelProps={{ shrink: false }}
@@ -62,22 +63,43 @@ export const LibraryHero = () => {
             sx={{
               background: "#fff",
               borderRadius: 2.5,
-              width: { xs: "90vw", sm: "50vw" },
+              width: { xs: "90vw", md: "50vw" },
             }}
           />
-          <LoadingButton
-            type="submit"
-            variant="contained"
-            color="primary"
-            loading={false}
-            fullWidth={smallScreen ? true : false}
-            loadingPosition="start"
-            startIcon={<SearchIcon />}
-            size={smallScreen ? "small" : "large"}
-            sx={{ fontWeight: 700, borderRadius: 2.5, py: { xs: 1, sm: 2 } }}
-          >
-            Search
-          </LoadingButton>{" "}
+          {!searchedData && (
+            <LoadingButton
+              variant="contained"
+              color="primary"
+              loading={false}
+              fullWidth={smallScreen ? true : false}
+              loadingPosition="start"
+              startIcon={<SearchIcon />}
+              size={smallScreen ? "small" : "large"}
+              sx={{
+                fontWeight: 700,
+                borderRadius: 2.5,
+                py: { xs: 1, sm: 2 },
+                width: { xs: "90vw", md: "inherit" },
+              }}
+            >
+              Search
+            </LoadingButton>
+          )}
+          {searchedData && (
+            <LoadingButton
+              variant="contained"
+              color="error"
+              loading={false}
+              fullWidth={smallScreen ? true : false}
+              loadingPosition="start"
+              startIcon={<ClearIcon />}
+              onClick={() => passSearchedData("")}
+              size={smallScreen ? "small" : "large"}
+              sx={{ fontWeight: 700, borderRadius: 2.5, py: { xs: 1, sm: 2 } }}
+            >
+              Clear
+            </LoadingButton>
+          )}
         </Stack>
       </FormProvider>
     </Box>
