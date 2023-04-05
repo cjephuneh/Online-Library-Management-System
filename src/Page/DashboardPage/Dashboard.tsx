@@ -1,17 +1,14 @@
 import React from "react";
 
 import { useGetBRBooks } from "./useGetBRBooks";
-import { BookCard } from "../LibraryPage/BookCard";
 import { LibraryHero } from "../LibraryPage/LibraryHero";
 import { useDecodedToken } from "../../hooks/useDecodedToken";
-import { useBookReturn } from "../BookDetailPage/useBookReturn";
 
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import LoadingButton from "@mui/lab/LoadingButton";
 
-import BeenhereIcon from "@mui/icons-material/Beenhere";
+import { DashboardBookCard } from "./DashboardBookCard";
 
 export const Dashboard = () => {
   const [searchedData, setSearchedData] = React.useState<string>("");
@@ -27,9 +24,6 @@ export const Dashboard = () => {
   const filteredData = bookData?.filter((item) =>
     item.name.toLowerCase().includes(searchedData.toLowerCase())
   );
-
-  // To return a book
-  const { sendReturnRequest } = useBookReturn();
 
   return (
     <Box>
@@ -54,26 +48,7 @@ export const Dashboard = () => {
             flexWrap={"wrap"}
           >
             {filteredData?.map((item) => (
-              <Box
-                key={item.id}
-                sx={{ minWidth: { xs: "95vw", md: 375 }, borderRadius: 2.5 }}
-              >
-                <BookCard {...item} showReturn={true} />
-                <LoadingButton
-                  variant="contained"
-                  color="success"
-                  loadingPosition="start"
-                  startIcon={<BeenhereIcon />}
-                  onClick={() => {
-                    sendReturnRequest(item.id.toString(), item.slug);
-                    sendGetBookRequest(currentEmail);
-                  }}
-                  fullWidth
-                  sx={{ mt: 2 }}
-                >
-                  Return
-                </LoadingButton>
-              </Box>
+              <DashboardBookCard key={item.id} {...item} />
             ))}
             {filteredData?.length === 0 && (
               <Typography variant="h4" color={"text.secondary"}>

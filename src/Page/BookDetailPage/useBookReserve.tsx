@@ -42,9 +42,8 @@ export const useBookReserve = () => {
       sendGetBookRequest();
       setReserveLoading(false);
       toast.success("Congrats! You have successfully reserved the books.");
-    } catch (error) {
-      // console.log(error.);
-      toast.error("Something went wrong while completing your request!");
+    } catch (errors: any) {
+      toast.error(errors.response.data);
       setReserveError(true);
       setReserveLoading(false);
     }

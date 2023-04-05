@@ -44,9 +44,8 @@ export const useBookBorrow = () => {
       sendGetBookRequest();
       setBorrowLoading(false);
       toast.success("Congrats! You have successfully borrowed the books.");
-    } catch (error) {
-      // console.log(first)
-      toast.error("Something went wrong while completing your request!");
+    } catch (errors: any) {
+      toast.error(errors.response.data[0]);
       setBorrowError(true);
       setBorrowLoading(false);
     }
