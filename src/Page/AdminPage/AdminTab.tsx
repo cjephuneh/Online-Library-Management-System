@@ -1,8 +1,12 @@
 import React from "react";
 import { useSelector } from "react-redux";
 
+import { useGetGenre } from "./useGetGenre";
+import { useGetAuthor } from "./useGetAuthor";
 import { RootState } from "../../redux/redux";
 import { AdminBookCard } from "./AdminBookCard";
+import { AdminGenreCard } from "./AdminGenreCard";
+import { AdminAuthorCard } from "./AdminAuthorCard";
 
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
@@ -10,8 +14,10 @@ import Tab from "@mui/material/Tab";
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
+import { Typography } from "@mui/material";
 
 export const AdminTab: React.FC = () => {
+  // For Tab Selector
   const [value, setValue] = React.useState("1");
 
   const onTabChangeHandler = (
@@ -22,6 +28,20 @@ export const AdminTab: React.FC = () => {
   };
 
   const { books } = useSelector((state: RootState) => state.book);
+
+  // To get Genre Data
+  const { genreData, genreError, sendGetGenreRequest } = useGetGenre();
+
+  React.useEffect(() => {
+    sendGetGenreRequest();
+  }, [sendGetGenreRequest, genreData]);
+
+  // To get Author Data
+  const { authorData, authorError, sendGetAuthorRequest } = useGetAuthor();
+
+  React.useEffect(() => {
+    sendGetAuthorRequest();
+  }, [sendGetAuthorRequest, authorData]);
 
   return (
     <Box>
@@ -51,10 +71,38 @@ export const AdminTab: React.FC = () => {
           </Stack>
         </TabPanel>
         <TabPanel value={"2"} sx={{ minHeight: "100vh" }}>
-          <Stack direction={"row"} gap={2}></Stack>
+          <Stack
+            direction={"row"}
+            justifyContent={"center"}
+            gap={4}
+            flexWrap={"wrap"}
+          >
+            {authorData?.map((item) => (
+              <AdminAuthorCard key={item.id} {...item} />
+            ))}
+            {authorError && (
+              <Typography variant="h4" color="text.secondary">
+                Error while fetching author....
+              </Typography>
+            )}
+          </Stack>
         </TabPanel>
         <TabPanel value={"3"} sx={{ minHeight: "100vh" }}>
-          <Stack direction={"row"} gap={2}></Stack>
+          <Stack
+            direction={"row"}
+            justifyContent={"center"}
+            gap={4}
+            flexWrap={"wrap"}
+          >
+            {genreData?.map((item) => (
+              <AdminGenreCard key={item.id} {...item} />
+            ))}
+            {genreError && (
+              <Typography variant="h4" color="text.secondary">
+                Error while fetching genre....
+              </Typography>
+            )}
+          </Stack>
         </TabPanel>
       </TabContext>
     </Box>

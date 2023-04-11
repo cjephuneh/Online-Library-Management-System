@@ -9,7 +9,6 @@ import { BooksSkeleton } from "../../component/Skeleton/BooksSkeleton";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import { FormControl, InputLabel } from "@mui/material";
 
 interface Props {
   bookLoading: boolean;
@@ -32,32 +31,14 @@ export const Library: React.FC<Props> = ({ bookLoading, bookError }) => {
         passSearchedData={setSearchInput}
       />
       <Box sx={{ px: 4, my: 4 }}>
-        <Stack direction={"row"} justifyContent={"space-between"}>
-          <Typography
-            variant="body2"
-            fontWeight={500}
-            color="text.secondary"
-            sx={{ mb: 4, fontSize: 26 }}
-          >
-            Recently Added
-          </Typography>
-          <FormControl sx={{ width: "10vw" }}>
-            <InputLabel id="demo-simple-select-label">
-              --- Select Genre ---
-            </InputLabel>
-            {/* <Select
-              labelId="genre-select"
-              id="genre-select"
-              // value={genre}
-              label="Select Genre"
-              // onChange={handleChange}
-            >
-              <MenuItem value={10}>Ten</MenuItem>
-              <MenuItem value={20}>Twenty</MenuItem>
-              <MenuItem value={30}>Thirty</MenuItem>
-            </Select> */}
-          </FormControl>
-        </Stack>
+        <Typography
+          variant="body2"
+          fontWeight={500}
+          color="text.secondary"
+          sx={{ mb: 4, fontSize: 26 }}
+        >
+          Recently Added
+        </Typography>
         {bookLoading && <BooksSkeleton />}
         {!bookError && (
           <Stack

@@ -1,6 +1,7 @@
 import React from "react";
 
 import { BookDataType } from "../../redux/bookSlice";
+import { AdminBookInputModel } from "./AdminBookInputModel";
 
 import Card from "@mui/material/Card";
 import Stack from "@mui/material/Stack";
@@ -23,6 +24,9 @@ export const AdminBookCard: React.FC<BookDataType> = ({ ...item }) => {
   const today = new Date().getTime();
   const endTimeStamp = new Date(item?.end_at!).getTime();
   const isBookAvailable = today - endTimeStamp > 86400000;
+
+  // For clicking on edit button
+  const [editModel, setEditModel] = React.useState<boolean>(false);
 
   return (
     <Card
@@ -75,12 +79,16 @@ export const AdminBookCard: React.FC<BookDataType> = ({ ...item }) => {
           color="warning"
           loadingPosition="start"
           startIcon={<EditIcon />}
-          // onClick={() => sendBorrowRequest(bookID!, bookSLUG!)}
+          onClick={() => setEditModel(true)}
           sx={{ my: 0.5 }}
           fullWidth
         >
           Edit
         </LoadingButton>
+        <AdminBookInputModel
+          open={editModel}
+          handleClose={() => setEditModel(false)}
+        />
         <LoadingButton
           variant="contained"
           color="error"

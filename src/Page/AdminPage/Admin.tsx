@@ -2,7 +2,6 @@ import React from "react";
 import { useSelector } from "react-redux";
 
 import { RootState } from "../../redux/redux";
-import { AdminBookCard } from "./AdminBookCard";
 import { LibraryHero } from "../LibraryPage/LibraryHero";
 
 import Box from "@mui/material/Box";
