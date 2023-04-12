@@ -43,6 +43,8 @@ export const LibraryHero: React.FC<Props> = ({
           alignItems={"center"}
           gap={2}
           component={"form"}
+          onSubmit={methods.handleSubmit(() => {})}
+          noValidate
         >
           <CustomInput
             id="searchInput"
