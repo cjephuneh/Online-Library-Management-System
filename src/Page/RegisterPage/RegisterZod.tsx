@@ -17,12 +17,9 @@ export const schema = z
     message: "Your password and confirm password must match.",
     path: ["password2"],
   })
-  .refine(
-    (data) => data.email.split("@")[0].includes(data.password.toLowerCase()),
-    {
-      message: "Your password is too similar to your email!",
-      path: ["password"],
-    }
-  );
+  .refine((data) => !data.password.includes(data.email.split("@")[0]), {
+    message: "Your password is too similar to your email!",
+    path: ["password"],
+  });
 
 export type RegisterDataType = z.infer<typeof schema>;
